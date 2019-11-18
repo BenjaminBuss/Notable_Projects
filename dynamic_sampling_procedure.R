@@ -6,26 +6,24 @@
 # Based on chapter 7, 8, 9 and 10.7 of Stats book
 # WIP, no testing done, limited capabilities
 
+
+#' Simulates for best possible probabilities to sample with based off known correlated values
+#' 
+#' @description 
+#' \code{dynamic_probabilities} insert description here. Insert assumptions here as well
+#' 
+#' @param x vector of data/indexs to sample from
+#' @param n size of final sample
+#' @param p vector of probabilities
+#' @param s number of rounds to simulate
+#' @param known yes
+#' 
+#' @examples None...
+#' 
+#' @return Vector 'Probabilities' the same length as x containing corresponding probabilities
+#' 
+#' @seealso ?sample
 dynamic_probabilities <- function(x, n, p, s, known) {
-    # === Function Documentation ===========================================================
-    # Simulates for best possible probabilities to sample with based off known information
-    # -- Inputs --
-    # x             :data to choose from/index
-    # n             :size of final sample
-    # p             :vector of probabilities
-    # known         :
-    # s             :number of rounds to simulate(default = 100)
-    # -- Outputs --
-    # probabilities :vector of the same length as x, containing the corresponsing probabilities
-    # -- Assumptions
-    # Plenty
-    # ======================================================================================
-    if(rlang::is_empty(s)) { # If s not provided default to 100
-        s = 100
-    }
-    else {      # If s is provided keep it as is
-        s = s
-    }
     
     #Initialize empty vector here
     
@@ -33,27 +31,32 @@ dynamic_probabilities <- function(x, n, p, s, known) {
         # Simulate s[100] times to determine best method
         
     }
+    # Select method with least variance as p
+    # probabilities = p.method(p)
     probabilities = (10 * p) / sum(p) # best formula as determined by above loop?
         
         
     return(probabilities)
 } # == End of Dynamic Probabilities Function ==
 
-
-dynamic_sample <- function(data, size, prob, rep, var) {
-    # === Function Documentation ===============================================================
-    # Dynamically samples from vector X, based off probability 'prob' and previous observations
-    # -- Inputs --
-    # data  :vector of elements to choose from
-    # size  :number of items to choose
-    # prob  :vector of corelated variable to base the probability weights off of
-    # rep   :Sample with or without replacement?
-    # var   :I don't even know the point of this variable
-    # -- Outputs --
-    # final :Vector of length 'size' containing sampled
-    # -- Assumptions --
-    # What are thoseeee
-    # ==========================================================================================
+#' Dynamicalaly samples from vector X, based off probability 'prob' and previous observations
+#' 
+#'   @description 
+#'   \code{dynamic_sample} insert description, assumptions, and limitations here
+#'   
+#'   @param data Vector of elements to sample from
+#'   @param size a non-negative integer giving the number of items to choose
+#'   @param rep should sampling be with replacement?
+#'   @param prob a vector of correlated variables to base weight off of
+#'   @param var don't know why I have this
+#'   
+#'   @examples None currently
+#'   
+#'   @return final vector of length 'size' containging final sample
+#'   
+#'   @seealso ?sample ?dynamic_probabilities 
+#'   
+dynamic_sample <- function(data, size, rep, prob,  var) {
     
     if(as.character(length(size)) >= as.character(length(x))) {
         print("Error, size must be larger than vector to be sampled from")
@@ -86,8 +89,8 @@ dynamic_sample <- function(data, size, prob, rep, var) {
 
 # How to sample without replacement???
 # How to return 'Known' data and implement it into dynamic sampling procedure?
-# 
-# 
+# Weights
+# Genetic programming
 # 
 
 # Test Cases --------------------------------------------------------------
@@ -103,5 +106,7 @@ dynamic_sample(x, size, prob, 100)
 
 # 
 # 
+
+
 
 
