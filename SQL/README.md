@@ -12,7 +12,7 @@ An extremely messy queries which mashes together `UNION`, `JOINS`, `CASE`, and s
 An attempt to simplify the complex_join within the restrictions of MySQL 5.7.
 
 ## live_accounts
-A simple query to aggregate the number of live accounts based on the distinct number of locations we billed, giving us the total billables and live locations on a monthly and yearly basis.
+A simple query to aggregate the number of live accounts based on the distinct number of locations we billed, giving us the total billables and live locations on a monthly and yearly basis. Utilitized `COUNT`, `SUM` and `GROUP BY`.
 
 ## long_call_contact_id
 A medium-complexity query to determine how many calls matching a certain criteria(length > 120, x != 1, etc) happened. Uses a subquery and `time_to_sec`.
