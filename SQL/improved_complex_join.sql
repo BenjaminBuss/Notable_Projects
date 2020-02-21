@@ -1,6 +1,6 @@
 # Attempting some queue analysis and datalinking in SQL instead of R
- # 3 main tables to join: acs_transactopns, broadsoft_screenpop, call_log
- # Additional joining criteria increases amount of data by 66% without sacraficing accuracy
+# 3 main tables to join: acs_transactopns, broadsoft_screenpop, call_log
+# Additional joining criteria increases amount of data by 66% without sacraficing accuracy
 SELECT DISTINCT call_id, b.datestamp AS pop_time, phone, user_id, acs_transaction_id, c.datestamp AS call_time, 
 	c.disposition, c.dialed, c.number , broadsoft_user, a.contact_id, a.brand_id, a.pro_id, action_order AS call_action
 FROM call_log AS c
