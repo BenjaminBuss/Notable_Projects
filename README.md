@@ -9,9 +9,14 @@ The majority of my R experience falls into one of two categories:
 
 ## SQL
 Contains a datacamp project, and some queries I wrote for a job.
-The majority of my SQL was self-taught while I worked at ProNexis, I originally learned basic syntax to research issues for helpdesk and later to export data to do analysis in R. Eventually I picked up additional syntax and filled in my gaps to a point of intermediate understanding through online courses. Experience dealing with:
+The majority of my SQL was self-taught while I worked at ProNexis, I originally learned basic syntax to research issues for helpdesk and later to export data to do analysis in R. Eventually I picked up additional syntax and filled in my gaps to a point of intermediate understanding through online courses. I've had experience using:
 - Basic `SELECT` syntax(`DISTINCT`, `BETWEEN`, `LIKE`, `ORDER BY`, etc)
-- Joins(`INNER`, `OUTER`, `LEFT`, `RIGHT`, `UNION`, `UNION ALL`, full, self)
+- Joins(`INNER`, `OUTER`, `LEFT`, `RIGHT`, full, self)
+- Set Operators(`UNION`, `UNION ALL`, `INTERSECT`)
 - Aggregation(`COUNT`, `SUM`, `MAX`, ` GROUP BY`, `HAVING`, etc)
 - Subqueries(`IN`, `EXISTS`, inline views, correlated, `WITH` syntax[CTEs], etc, )
 - Other(`CASE` statements, some views, etc.)
+
+### SQL Weaknesses: 
+- Little knowledge of SQL for database management(`CREATE`, `DROP`, `ALTER`, `INSERT`, `DELETE`, `UPDATE`)
+- Inexperienxe with Indexes and Query Optimization
