@@ -10,8 +10,8 @@ The majority of my R experience falls into one of two categories:
 ## SQL
 Contains a datacamp project, and some queries I wrote for a job.
 The majority of my SQL was self-taught while I worked at ProNexis, I originally learned basic syntax to reasearch issues for helpdesk and later to export data to do analysis in R. Eventually I picked up additional syntax and filled in my gaps to a point of intermediate understanding through online courses. Experience dealing with:
-- Basic selection(where, distinct, like, in, etc)
+- Basic `SELECT` syntax(`DISTINCT`, `LIKE`, `ORDER BY`, etc)
 - Joins(inner, outer, left, right, union, union all, self joins)
-- Aggregation(sum, count, group by, order by, etc)
-- Subqueries(basic subqueries, correlated, Common Table Expresssions, etc)
+- Aggregation(`COUNT`, `SUM`, `MAX`, ` GROUP BY`, `HAVING`, etc)
+- Subqueries(`IN`, `EXISTS`, inline views, correlated, `WITH` syntax[CTEs], etc, )
 - Other(CASE statements, some views, etc.)
