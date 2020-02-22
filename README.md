@@ -16,7 +16,3 @@ The majority of my SQL was self-taught while I worked at ProNexis, I originally 
 - Aggregation(`COUNT`, `SUM`, `MAX`, ` GROUP BY`, `HAVING`, etc)
 - Subqueries(`IN`, `EXISTS`, inline views, correlated, `WITH` syntax[CTEs], etc, )
 - Other(`CASE` statements, some views, etc.)
-
-### SQL Weaknesses: 
-- Little knowledge of SQL for database management(`CREATE`, `DROP`, `ALTER`, `INSERT`, `DELETE`, `UPDATE`)
-- Inexperienxe with Indexes and Query Optimization
