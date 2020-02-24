@@ -1,0 +1,208 @@
+---
+title: "BASIC KERNEL METHOD"
+output: html_notebook
+---
+
+My attempt to improve my stat4000hw4, playing around with different algorithm options.
+
+Project Idea: 
+    Started out as a homework assignment for my STAT 4000 class were based off the Boston1970 data set we wanted to predict the median home price in a new neighborhood. 
+    Originally created a basic variation of a K-Nearest-Neighbors model for the assignment, but decided I wanted to play around a little more, testing different ways to normalize, compute distance, and compute "weights". 
+
+
+
+# 1 Load Packages, Import Data and Initial Prep
+
+I believe doing just about anything in R should start with loading the tidyverse package. I then load our training dataset and our "predictors". I then bind the two together for normalization purposes
+
+```{r}
+library(tidyverse)
+
+Boston1970.1 <- read.csv("~/class_work/Boston1970-1.csv")
+UnpricedNeighborhood <- read.csv("~/class_work/UnpricedNeighborhood.csv")
+
+data <- Boston1970.1 %>% select(2:14)
+base_dataframe <- bind_rows(UnpricedNeighborhood, Boston1970.1)
+
+```
+
+# 2 Data Normalization
+
+I
+
+```{r}
+original_normalization <- function(df) {
+    normalize <- function(x) (x - min(x)) / (min(x)- max(x))
+
+    normalized_data <- added_data %>% mutate_all(normalize)
+    return(normalized_data)
+}
+z_score_normalization <- function(df) {
+    normalize <- function(x) (x - mean(x)) / (mean(x))
+
+    normalized_data <- added_data %>% mutate_all(normalize)
+    return(normalized_data)
+}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+    cleaned_data <- normalized_data %>% slice(2:506)
+    predictors <- normalized_data %>% slice(1)
+```
+
+## Different Methods of Data Normalization
+- original:  (x - min(x)) / (min(x)- max(x))
+    Pros:
+    Cons:
+- 'z-score': 
+    Pros:
+    Cons:
+- standard:  
+    Pros:
+    Cons:
+
+
+# 2 Formula to Calculate Euclidian distance
+
+Calculate D(x, xi), where 'i' =1, 2, ….., n and 'D' is the Euclidean measure between the data points.
+The calculated Euclidean distances must be arranged in ascending order.
+Initialize k and take the first k distances from the sorted list.
+Figure out the k points for the respective k distances.
+Calculate ki, which indicates the number of data points belonging to the ith class among k points i.e. k ≥ 0
+If ki >kj ∀ i ≠ j; put x in class i.
+```{r}
+# -------- Manual, Mutilated Version of K-Means complete with weights --------
+# ============================================================================
+# Calculate distance between single point x and y
+diffsq <- function(x, y) {
+    # x = single value
+    # y = single value
+    # returns single value
+    diffsquared = (x - y)^2
+    return(as.numeric(diffsquared))
+}
+# Calculates euclidian distance between df x and df y
+distance <- function(x, y, weights) {
+    # x     : single observation of df
+    # y     : single observation of df
+    # weights: dataframe or vector of weights
+    # returns: single number of Euclidian distance between x and y with given weight
+    sums  = 0 
+    for(i in 1:length(data)) {
+        sums = sums + (weights[i] * diffsq(x[i], y[i]))
+    }
+    knn_distance <- sqrt(sums)
+    return(knn_distance)
+}
+# Calculates Euclidian distance between predictor dataframe, and *ALL* training values
+#   selects K Nearest-Neighbors and returns an array of the values for those Neighborhoods
+knn_calc <- function(pred, base, weights, k) {
+    # pred   : data frame of predictors
+    # base   : data frame of comparison
+    # weights: array/df of "weights" per value
+    # k      : number of Nearest Neighbors to select
+    # returns: array of value of k-nearest-neighbors
+    knn_values <- array(1:nrow(data))
+    for(i in 1:nrow(data)) {
+        knn_values[i] <- distance(pred, base %>% slice(i), weights)
+    }
+    knn_df <- as.data.frame(knn_values)
+    knn_df <- knn_df %>% rowid_to_column(var = "id") %>% arrange(knn_values) %>% slice(1:k)
+    knn_df <- inner_join(knn_df, Boston1970.1 %>% select(Number, MedianHomeValue), by = c("id" = "Number"))
+    value <- knn_df %>% pull(MedianHomeValue)
+    return(value)
+}
+# Computes weights of each column based off a simple linear regression. 
+#   returns array of weights consisting of coefficient of linear regression.
+weight_calc <- function(df) {
+    # df      : data frame with column named "value"
+    # returns : array of weights
+    n = as.numeric(length(df)) - 1
+    weights <- rep(1, n)
+    for(i in 1:n) {
+        positions <- c(i, 14)
+        temp <- df %>% select(positions) %>% rename(pred = 1)
+        model <- lm(value ~ pred, data = temp)
+        
+        weights[i] <- model$coefficients[2]
+    }
+    #weight_test <- weights / sum(weights)
+    return(weights)
+}
+```
+
+## Different Methods of Calculating Weights
+- linear regression coefficient
+    Pros:
+    Cons:
+- correlation
+    Pros:
+    Cons:
+- standard:  
+    Pros:
+    Cons:
+
+
+
+
+
+
+# 3 Giving it the good old college try
+```{r, message = FALSE, warnings = FALSE}
+k = 10
+weights <- weight_calc(Boston1970.1 %>% select(2:15) %>% rename(value = MedianHomeValue))
+test_weights <- rep(1, 13)
+abs_weights <- abs(weights)
+sum_weights <- abs(weights / sum(weights))
+start <- Sys.time()
+# Testing weight = coeff
+xx <- suppressWarnings(knn_calc(predictors, cleaned_data, weights, k))
+# Testing no weights(weight = 1)
+yy <- knn_calc(predictors, cleaned_data, test_weights, k)
+# zz <- knn_calc(predictors, cleaned_data, abs_weights, k)
+# aa <- knn_calc(predictors, cleaned_data, sum_weights, k)
+# Print out results
+print("Weight = coefficient of lm")
+print(paste0("Mean:  ", mean(xx)))
+print(paste0("Median: ", median(xx)))
+print(paste0("Variance:  ", var(xx)))
+print(paste0("Range:  ", max(xx) - min(xx)))
+summary(xx)
+# w/o weights
+print(" ** No weights **")
+print(paste0("Mean:  ", mean(yy)))
+print(paste0("Median: ", median(yy)))
+print(paste0("Variance:  ", var(yy)))
+print(paste0("Range:  ", max(yy) - min(yy)))
+summary(yy)
+# Actual Value = 30.7
+```
+
+
+Things I've read in the process of this thing:
+https://towardsdatascience.com/k-nearest-neighbors-algorithm-with-examples-in-r-simply-explained-knn-1f2c88da405c
+https://www.datacamp.com/community/tutorials/machine-learning-in-r#normalization
+https://www.edureka.co/blog/knn-algorithm-in-r/
+https://www.analyticsvidhya.com/blog/2015/08/learning-concept-knn-algorithms-programming/
+
+https://www.google.com/search?q=normalizing+dataset+for+knn+in+r&oq=normalizing+dataset+for+knn+in+r&aqs=chrome..69i57j33.5807j0j7&sourceid=chrome&ie=UTF-8
+
+https://stats.stackexchange.com/questions/287425/why-do-you-need-to-scale-data-in-knn
+
+
+http://www.sthda.com/english/articles/35-statistical-machine-learning-essentials/142-knn-k-nearest-neighbors-essentials/
+
+https://rstudio-pubs-static.s3.amazonaws.com/316172_a857ca788d1441f8be1bcd1e31f0e875.html
+
+https://www3.nd.edu/~steve/computing_with_data/17_Refining_kNN/refining_knn.html
+
+https://www.google.com/search?q=normalizing+predictors+for+knn+in+r&oq=normalizing+predictors+for+knn+in+r&aqs=chrome..69i57j33.16871j0j7&sourceid=chrome&ie=UTF-8
