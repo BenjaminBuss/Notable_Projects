@@ -12,3 +12,6 @@ An attempt to try and figure out a dynamic sampling procedure(that adjusts the w
 My first attempt at a using a handwritten kernel method for analysis. Some kinda of bastardization of knn. 
 Estimates neighborhood value to be 30.1 with actual value being 30.7.
 
+## kernal_base_boston
+The evolution of stat4000ass4, I experiment with different normalization, weighting, and calculating of Euclidian distance.
+
