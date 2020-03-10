@@ -16,3 +16,7 @@ https://learn.datacamp.com/skill-tracks/learn-statistics-with-r?version=2
 
 ### Python
 https://learn.datacamp.com/skill-tracks/python-programming?version=1
+
+
+### Misc
+https://learn.datacamp.com/courses/introduction-to-git
